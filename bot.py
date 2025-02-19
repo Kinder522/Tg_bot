@@ -49,6 +49,7 @@ async def process_cancel_command(message: Message):
 async def process_positive_answer(message: Message):
     global user,num
     user['in_game'] = True
+    user['attempts'] = 5
     num = randomNum()
     await message.answer("Все я загадал,можешь отгадывать")
 
@@ -65,11 +66,15 @@ async def answer(message:Message):
                     if int(message.text) == num :
                         await message.answer("Молодец,угадал,просто тигр❤❤❤")
                         user['in_game'] = False
+                        user['total_games'] += 1
+                        user['wins'] += 1
                     else:
                         await message.answer("Не угадал,попробуй еще😢😢😢")
                         user['attempts'] -= 1
                 else:
-                    await message.answer("У тебя попыток не осталось,ТУПОЙ")
+                    await message.answer("У тебя попыток не осталось,ТУПОЙ,игра закончена")
+                    user['in_game'] = False
+                    user['total_games'] += 1
         else:
             await message.reply("А ну говори нормальным языком,ничего же не понятно")
 
