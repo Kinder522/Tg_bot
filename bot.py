@@ -73,4 +73,11 @@ async def answer(message:Message):
         else:
             await message.reply("А ну говори нормальным языком,ничего же не понятно")
 
+@dp.message(F.text.lower().in_(['нет', 'не', 'не хочу', 'не буду']))
+async def process_negative_answer(message: Message):
+    if user['in_game']:
+        await message.answer("Огадывай давай,не хочет он")
+    else:
+        await message.answer("Ну не хочешь как хочешь,твои проблемы")
+
 dp.run_polling(bot)
