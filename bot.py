@@ -1,6 +1,6 @@
 from aiogram import F, Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message ,ReplyKeyboardMarkup,KeyboardButton,ReplyKeyboardRemove
 from Config import BOT_TOKEN
 import random
 
@@ -10,9 +10,7 @@ num = 0
 wait = False
 wait_to_ans = False
 
-
 users = {}
-
 
 @dp.message(Command(commands=["start"]))
 async def start(message: Message):
@@ -24,13 +22,18 @@ async def start(message: Message):
             'total_games': 0,
             'wins': 0
         }
-        await message.answer(
-            "Привет!Я бот который играет  с тобой угадай число\n, я загадываю любое число от 1 до 10 и говорю отгадал ты или нет,ты готов?")
+        ready = KeyboardButton(text='да')
+        not_ready = KeyboardButton(text='нет')
+        keyboard = ReplyKeyboardMarkup(keyboard=[[ready, not_ready]],resize_keyboard=True,one_time_keyboard=True)
+        await message.answer(text="Привет!Я бот который играет  с тобой угадай число\n, я загадываю любое число от 1 до 10 и говорю отгадал ты или нет,ты готов?",
+            reply_markup=keyboard)
+        
+        
     else:
-        await message.answer(
-            "Привет!Я бот который играет  с тобой угадай число\n, я загадываю любое число от 1 до 10 и говорю отгадал ты или нет,ты готов?")
-    
-
+        ready = KeyboardButton(text='да')
+        not_ready = KeyboardButton(text='нет')
+        keyboard = ReplyKeyboardMarkup(keyboard=[[ready, not_ready]],resize_keyboard=True,one_time_keyboard=True)
+        await message.answer(text = "Привет!Я бот который играет  с тобой угадай число\n, я загадываю любое число от 1 до 10 и говорю отгадал ты или нет,ты готов?",reply_markup=keyboard)
 
 @dp.message(Command(commands=["help"]))
 async def help(message: Message):
@@ -62,7 +65,7 @@ async def process_positive_answer(message: Message):
     users[message.from_user.id]['in_game'] = True
     users[message.from_user.id]['attempts'] = 5
     num = randomNum()
-    await message.answer("Все я загадал,можешь отгадывать")
+    await message.answer(text = "Все я загадал,можешь отгадывать")
 
 def randomNum() -> int:
     return random.randint(1,100)
@@ -70,9 +73,9 @@ def randomNum() -> int:
 @dp.message(F.text.lower().in_(['нет', 'не', 'не хочу', 'не буду']))
 async def process_negative_answer(message: Message):
     if users[message.from_user.id]['in_game']:
-        await message.answer("Огадывай давай,не хочет он")
+        await message.answer(text="Огадывай давай,не хочет он")
     else:
-        await message.answer("Ну не хочешь как хочешь,твои проблемы")
+        await message.answer(text="Ну не хочешь как хочешь,твои проблемы")
 
 @dp.message()
 async def answer(message:Message):
