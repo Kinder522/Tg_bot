@@ -1,28 +1,25 @@
-class MyClass:
-    def __init__(self, a: int, b: str):
-        self.a = a
-        self.b = b
-
-    def get_a(self) -> int:
-        return self.a
-
-    def set_a(self, a: int):
-        self.a = a
-
-    def get_b(self) -> str:
-        return self.b
-
-    def set_b(self, b: str):
-        self.b = b
-
-
-def say_something(number: int, word: str) -> str:
-    word = word.capitalize()
-    return word * number
+from aiogram import F, Bot, Dispatcher
+from aiogram.filters import Command
+from aiogram.types import Message ,ReplyKeyboardMarkup,KeyboardButton
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from Config import BOT_TOKEN
+import requests
+api_url = 'https://tools.aimylogic.com/api/now?tz=Europe/Moscow&format=dd/MM/yyyy'
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher()
+kb_builder = ReplyKeyboardBuilder()
+day = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"]
+buttons = [KeyboardButton(text=day[j])for j in range(7)]
+buttons.extend(KeyboardButton(text=" ")for i in range(24,29))
+buttons.extend(KeyboardButton(text=str(i))for i in range(1,32))
+buttons.extend(KeyboardButton(text=" ")for i in range(1,7))
+buttons.append(KeyboardButton(text="<"))
+buttons.append(KeyboardButton(text=">"))
+kb_builder.row(*buttons,width=7)
 
 
-m = MyClass(3, "heLLo")
-print(say_something(m.get_a(), m.get_b()))
-m.set_a("dsa")
-m.set_b("TRY")
-print(say_something(m.get_a(), m.get_b()))
+@dp.message(Command(commands=["start"]))
+async def start(message:Message):
+    await message.answer(text="Привет!Я бот c календарем",reply_markup=kb_builder.as_markup())
+
+dp.run_polling(bot)
