@@ -1,23 +1,17 @@
-def my_first_decarator(function_to_decarator):
-    # Создание функции
-    def obertka_vokryg_ocnovnoi_function():
-        print("Выполняем любые действия до функции")
-        function_to_decarator()
-        print("Выполняем любые действия после функции")
-
-    return obertka_vokryg_ocnovnoi_function
-
-def my_second_decarator(abc):
-    def fn():
-        print("Как по вашему где я окажусь?")
-        abc()
-        print("А этот текст где будет?")
-    return fn
+import time
 
 
-@my_first_decarator
-@my_second_decarator
-def function():
-    print("Текст в основной функции!")
+def send_mail(num):
+    print(f'Улетело сообщение {num}')
+    time.sleep(1)  # Имитация отправки сообщения по сети
+    print(f'Сообщение {num} доставлено')
 
-function() 
+
+def main():
+    for i in range(10):
+        send_mail(i)
+
+
+start_time = time.time()
+main()
+print(f'Время выполнения программы: {time.time() - start_time} с')

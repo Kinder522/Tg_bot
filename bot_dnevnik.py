@@ -1,6 +1,6 @@
-from aiogram import F, Bot, Dispatcher
+from aiogram import F, Bot, Dispatcher,types
 from aiogram.filters import Command
-from aiogram.types import Message ,ReplyKeyboardMarkup,KeyboardButton
+from aiogram.types import Message ,ReplyKeyboardMarkup,KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from Config import BOT_TOKEN
 import json
 
@@ -9,7 +9,8 @@ dp = Dispatcher()
 add_record = KeyboardButton(text='Добавить запись')
 del_record = KeyboardButton(text='Удалить запись')
 watch_record = KeyboardButton(text='Просмотреть записи')
-keyboard = ReplyKeyboardMarkup(keyboard=[[add_record, del_record],[watch_record]],resize_keyboard=True,one_time_keyboard=True)
+del_all_record = KeyboardButton(text="Удалить все записи")
+keyboard = ReplyKeyboardMarkup(keyboard=[[add_record, del_record],[watch_record],[del_all_record]],resize_keyboard=True,one_time_keyboard=True)
 data = {}
 wait_to_add_record = False
 wait_to_del_record = False
@@ -91,20 +92,5 @@ async def func(message:Message):
             wait_to_del_record = False
         except ValueError:
             await message.answer("Неверный номер записи.")
-
-
-
-
-
-
-    
-
-        
-        
-
-   
-
-
-
 
 dp.run_polling(bot)

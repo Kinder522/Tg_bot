@@ -96,7 +96,7 @@ async def answer(message:Message):
                         await message.answer("Не угадал, Больше нада")
                         users[message.from_user.id]['attempts'] -= 1
                 else:
-                    await message.answer("У тебя попыток не осталось,НЕ ТУПОЙ,игра закончена,число было " + num)
+                    await message.answer("У тебя попыток не осталось,НЕ ТУПОЙ,игра закончена,число было " + str(num))
                     users[message.from_user.id]['in_game'] = False
                     users[message.from_user.id]['total_games'] += 1
         else:
